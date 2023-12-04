@@ -60,10 +60,10 @@
     WHERE NOT EXISTS (SELECT lieblingsgetraenk FROM gast WHERE lieblingsgetraenk = gname);
 
 7.
-create table ortsstatistik (
-    stat_ort char(20),
-    anz_biergarten int,
-    durchschnitt_umsatz decimal(8,2)
+    create table ortsstatistik (
+        stat_ort char(20),
+        anz_biergarten int,
+        durchschnitt_umsatz decimal(8,2)
 );
 
     INSERT INTO ortsstatistik
@@ -80,11 +80,11 @@ create table ortsstatistik (
                   WHERE gebdatum < '1.1.1945');
 
 9.
-DELETE FROM schenkt_aus
-WHERE getraenke_name IN (SELECT gname FROM getraenk WHERE hersteller NOT IN (SELECT hersteller from getraenk JOIN gast ON lieblingsgetraenk = gname));
+    DELETE FROM schenkt_aus
+    WHERE getraenke_name IN (SELECT gname FROM getraenk WHERE hersteller NOT IN (SELECT hersteller from getraenk JOIN gast ON lieblingsgetraenk = gname));
 
-DELETE FROM getraenk
-WHERE hersteller IN (SELECT hersteller FROM getraenk WHERE hersteller NOT IN (SELECT hersteller from getraenk JOIN gast ON lieblingsgetraenk = gname));
+    DELETE FROM getraenk
+    WHERE hersteller IN (SELECT hersteller FROM getraenk WHERE hersteller NOT IN (SELECT hersteller from getraenk JOIN gast ON lieblingsgetraenk = gname));
 
-DELETE FROM firma
-WHERE fname NOT IN (SELECT DISTINCT hersteller FROM getraenk WHERE gname IN (SELECT lieblingsgetraenk FROM gast));
+    DELETE FROM firma
+    WHERE fname NOT IN (SELECT DISTINCT hersteller FROM getraenk WHERE gname IN (SELECT lieblingsgetraenk FROM gast));
