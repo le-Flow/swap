@@ -64,7 +64,7 @@
         stat_ort char(20),
         anz_biergarten int,
         durchschnitt_umsatz decimal(8,2)
-);
+    );
 
     INSERT INTO ortsstatistik
     SELECT ort, COUNT(*), SUM(umsatzprojahr)
