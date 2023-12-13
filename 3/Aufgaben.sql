@@ -1,17 +1,17 @@
-1.
+--1.
     SELECT DISTINCT ort
     FROM gast JOIN besucht ON besucher_nname = nname AND besucher_vname = vname
     JOIN biergarten ON bname = biergarten_name
     WHERE lieblingsgetraenk =  'Pils';
 
-2.
+--2.
     SELECT ort, AVG(preisproliter)
     FROM biergarten JOIN schenkt_aus On bname = biergarten_name
     JOIN getraenk On gname = getraenke_name
     WhERE alkogehalt > 0
     GROUP BY ort;
 
-3.
+--3.
     SELECT ort, AVG(preisproliter)
     FROM biergarten JOIN schenkt_aus On bname = biergarten_name
     JOIN getraenk On gname = getraenke_name
@@ -19,7 +19,7 @@
     GROUP BY ort
     HAVING SUM(ausschankprotag) > 1500;
 
-4.
+--4.
     SELECT bname
     FROM biergarten
     WHERE umsatzprojahr > (SELECT umsatzprojahr 
@@ -27,14 +27,14 @@
                            WHERE bname = 'Zur letzten Instanz' AND ort = 'Vilsbiburg')
     ORDER BY bname desc;
 
-5a.
+--5a.
     SELECT DISTINCT vname || ' ' || nname AS name, lieblingsgetraenk
     FROM gast JOIN besucht ON vname = besucher_vname AND nname = besucher_nname
     JOIN biergarten ON bname = biergarten_name
     WHERE bname > 'Fimstuben'
     ORDER BY name asc;
 
-5b.
+--5b.
     SELECT DISTINCT vname || ' ' || nname AS name, lieblingsgetraenk
     FROM gast JOIN besucht ON vname = besucher_vname AND nname = besucher_nname
     JOIN biergarten ON bname = biergarten_name
@@ -43,23 +43,23 @@
                        WHERE getraenke_name = 'Lauwasser')
     ORDER BY name asc;
 
-6a.
+--6a.
     SELECT gname
     FROM getraenk
     EXCEPT
     SELECT lieblingsgetraenk FROM gast;
 
-6b.
+--6b.
     SELECT gname
     FROM getraenk
     WHERE gname NOT IN (SELECT lieblingsgetraenk FROM gast);
 
-6c.
+--6c.
     SELECT gname
     FROM getraenk
     WHERE NOT EXISTS (SELECT lieblingsgetraenk FROM gast WHERE lieblingsgetraenk = gname);
 
-7.
+--7.
     create table ortsstatistik (
         stat_ort char(20),
         anz_biergarten int,
@@ -71,7 +71,7 @@
     FROM biergarten
     GROUP BY ort;
 
-8.
+--8.
     UPDATE biergarten
     SET anzahlplaetze = (SELECT MAX(anzahlplaetze) FROM biergarten)
     WHERE bname IN (SELECT bname
@@ -79,7 +79,7 @@
                   JOIN biergarten ON biergarten_name = bname
                   WHERE gebdatum < '1.1.1945');
 
-9.
+--9.
     DELETE FROM schenkt_aus
     WHERE getraenke_name IN (SELECT gname FROM getraenk WHERE hersteller NOT IN (SELECT hersteller from getraenk JOIN gast ON lieblingsgetraenk = gname));
 
