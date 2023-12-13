@@ -1,17 +1,17 @@
-1.
+--1.
     SELECT * FROM Bank;
 
-2.
+--2.
     SELECT * FROM Bank
     WHERE geschaeftssitz='Hamburg';
 
-3.
+--3.
     SELECT mname, wohnort
     FROM Mitarbeiter
     WHERE anstellungsdatum > ('28.04.1998')
     ORDER BY mname;
 
-4.
+--4.
     SELECT mname, wohnort, bname, blz
     FROM Mitarbeiter, Bank
     WHERE monatsgehalt < 2500 AND bname = arbeitgeber_bank;
@@ -20,13 +20,13 @@
     FROM Mitarbeiter JOIN Bank ON bname = arbeitgeber_bank
     WHERE monatsgehalt < 2500;
 
-5.
+--5.
     SELECT kontonummer, kontoart
     FROM Kunde JOIN unterhaelt ON inhaber = kname
     JOIN Konto On kontonr = kontonummer
     WHERE betreuer = 'Olafson';
 
-6a.
+--6a.
     SELECT kname, kontonummer, guthaben
     FROM Mitarbeiter JOIN Bank ON bname = arbeitgeber_bank
     JOIN Kunde ON mname = betreuer
@@ -35,7 +35,7 @@
     WHERE kontoart = 'Tagesgeld' AND geschaeftssitz = 'Frankfurt'
     ORDER BY kname, kontonummer;
 
-6b.
+--6b.
     SELECT kname, kontonummer, guthaben
     FROM Filiale JOIN Bank ON mutterbank =  bname
     JOIN Kunde ON zustaendige_filiale = fname
@@ -44,22 +44,22 @@
     WHERE kontoart = 'Tagesgeld' AND geschaeftssitz = 'Frankfurt'
     ORDER BY kname, kontonummer;
 
-7.
+--7.
     SELECT COUNT (*)
     FROM Mitarbeiter
     WHERE wohnort='Hamburg';
 
-8.
+--8.
     SELECT mname, monatsgehalt
     FROM Mitarbeiter
     WHERE monatsgehalt > (SELECT AVG(monatsgehalt) FROM Mitarbeiter);
 
-9.
+--9.
     SELECT mname, arbeitgeber_bank
     FROM Mitarbeiter
     WHERE mname IN (SELECT betreuer FROM Kunde WHERE wohnort = 'Leipzig');
 
-10.
+--10.
     SELECT kontonr, guthaben
     FROM Konto
     WHERE kontoart = 'Giro' AND anlage_filiale IN (SELECT fname FROM Filiale WHERE mutterbank = 'BlackBank')
