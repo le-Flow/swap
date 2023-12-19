@@ -1,0 +1,24 @@
+1.
+    db.uni.find()
+
+2.
+    db.forscher.find({gebdatum: {$gte: "1888-05-21"}})
+
+3.
+    db.forscher.find({gebdatum: {$gte: "1888-05-21"}}, {fname: 1, projektname: 1})
+
+4.
+    var cursor = db.uni.find({gruendungsdatum: {$lte: "1975.01.01"}})
+    while (cursor.hasNext()) {
+        printjson(db.forscher.find({uniname: {$eq: cursor.next().uname}}, {fname: 1}))
+    }
+
+5.
+    db.forscher.aggregate([
+        {$group: {
+                _id: "$uniname",
+                Forscher: {$sum: 1},
+                Zeit: {$avg: "$wochenarbeitszeit"}
+            }
+        }
+    ])
