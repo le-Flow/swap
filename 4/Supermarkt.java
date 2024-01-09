@@ -17,9 +17,9 @@ public class Supermarkt {
        Statement  stmt = con.createStatement();
        ResultSet rs = stmt.executeQuery(query);
 
-       System.out.println(String.format("%20s %10s %7s %20s", "Bezeichnung", "Preis", "Vorrat", "Kategorie"));
+       System.out.println(String.format("%s %12s %11s %10s", "Bezeichnung", "Preis", "Vorrat", "Kategorie"));
        while (rs.next()) {
-           System.out.println(String.format("%20s %8.2f %7d %20s", 
+           System.out.println(String.format("%s %8.2f %7d %20s", 
                        rs.getString("bezeichnung"),
                        rs.getFloat("preis"),
                        rs.getInt("vorrat"),
@@ -39,7 +39,7 @@ public class Supermarkt {
             System.out.println("Kundenname: ");
 
             kunde = scanner.nextLine();
-            if (kunde.isEmpty()) {
+            if (kunde.isEmpty() || kunde.isBlank() || kunde.equals("#")) {
                 break;
             }
 
@@ -47,9 +47,9 @@ public class Supermarkt {
             ResultSet rs = pstmt.executeQuery();
 
             try {
-                System.out.println(String.format("%6s %15s %4s %10s", "Kundenid", "Datum", "Status", "Name"));
+                System.out.println(String.format("%s %6s %12s %5s", "Best. ID", "Datum", "Status", "Name"));
                     while(rs.next()) {
-                        System.out.println(String.format("%d, %20s, %4s, %10s",
+                        System.out.println(String.format("%d %17s %3s %20s",
                                     rs.getInt("bestid"),
                                     rs.getString("datum"),
                                     rs.getString("status"),
@@ -76,6 +76,10 @@ public class Supermarkt {
         System.out.println("Kundenname eingeben: ");
         kunde = scanner.nextLine();
 
+        if(kunde.isEmpty() || kunde.isBlank() || kunde.equals("#")) {
+            return;
+        }
+
         ResultSet rs = stmt.executeQuery(String.format("SELECT kundeid FROM kunde WHERE kname = \'%s\'", kunde));
         try {
             rs.next() ;
@@ -94,7 +98,7 @@ public class Supermarkt {
             System.out.println("Warenname eingeben: ");
             ware = scanner.nextLine();
 
-            if (ware.isEmpty()) {
+            if (ware.isEmpty() || ware.isBlank() || ware.equals("#")) {
                 break;
             }
 
@@ -106,9 +110,7 @@ public class Supermarkt {
             catch (Exception e) {
                 // System.out.println(e.getMessage());
                 System.out.println("Ware wurde nicht gefunden!");
-
-                rs.close();
-                return;
+                continue;
             }
 
             System.out.println("Anzahl eingeben: ");
@@ -121,14 +123,6 @@ public class Supermarkt {
         bestellungStmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
         bestellungStmt.setInt(3, kundeID);
         bestellungStmt.executeUpdate();
-
-        /*
-        for (int k = 0; k < wareID.size(); k++) {
-            System.out.println("Ausgabe: ");
-            System.out.println(wareID.get(k));
-            System.out.println(anzahl.get(k));
-        }
-        */
 
         for (int k = 0; k < wareID.size(); k++) {
             enthaeltStmt.setInt(1, wareID.get(k));
