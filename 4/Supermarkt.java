@@ -76,7 +76,7 @@ public class Supermarkt {
         System.out.println("Kundenname eingeben: ");
         kunde = scanner.nextLine();
 
-        if(kunde.isEmpty() || kunde.isBlank() || kunde.equals("#")) {
+        if (kunde.isEmpty() || kunde.isBlank() || kunde.equals("#")) {
             return;
         }
 
@@ -118,18 +118,19 @@ public class Supermarkt {
 
             scanner.nextLine();
         }
+        
+        if (wareID.size() > 0) {
+            bestellungStmt.setString(1, "0");
+            bestellungStmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
+            bestellungStmt.setInt(3, kundeID);
+            bestellungStmt.executeUpdate();
 
-        bestellungStmt.setString(1, "0");
-        bestellungStmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
-        bestellungStmt.setInt(3, kundeID);
-        bestellungStmt.executeUpdate();
-
-        for (int k = 0; k < wareID.size(); k++) {
-            enthaeltStmt.setInt(1, wareID.get(k));
-            enthaeltStmt.setInt(2, anzahl.get(k));
-            enthaeltStmt.executeUpdate();
+            for (int k = 0; k < wareID.size(); k++) {
+                enthaeltStmt.setInt(1, wareID.get(k));
+                enthaeltStmt.setInt(2, anzahl.get(k));
+                enthaeltStmt.executeUpdate();
+            }
         }
-
         stmt.close();
         bestellungStmt.close();
    }
