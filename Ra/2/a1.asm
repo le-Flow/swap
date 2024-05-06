@@ -3,42 +3,46 @@ str:  .asciiz "Das sollte nun auf dem Stack zu sehen sein"
 
     .text
 main:
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	
 	la $a0, str
 	jal strlen
 	addi $v0, $v0, 2
+	add $s0, $v0, $zero
+	sub $sp, $sp, $s0
 	
-	add $fp, $sp, $zero
-	sub $sp, $sp, $v0
-	
-	add $t0, $fp, $zero  # base of frame
-	la $t1, str  # str offset
-	j _loopc
+	add $t0, $sp, $zero  # stack
+	la $t1, str  # string
 _loop:
-	lb $t2, 0($t1)  # 
-	sb $t2, 0($t0)
+	lb $t2, 0($t1)  # get char
+	beqz $t2, _done
+	sb $t2, 0($t0)  # store char
 	addi $t0, $t0, 1
 	addi $t1, $t1, 1
-	subi $v0, $v0, 1
-
-_loopc:
-	bne $v0, $zero, _loop
+	j _loop
+_done:
 	
-	add $a0, $fp, $zero  # 0($fp) is address of string
+	add $a0, $sp, $zero
 	jal printit
-	
-	add $sp, $fp, $zero
+
     li $v0, 10
     syscall
+    
+    add $sp, $sp, $s0
+    lw $ra, 0($sp)
+	addi $sp, $sp, 4
+    jr $ra
 
 
 strlen:
 	add $t0, $zero, $zero
-	j _sloopc
+	#j _sloopc
 _sloop:
 	addi $a0, $a0, 1
 	addi $t0, $t0, 1
 
-_sloopc:
+#_sloopc:
 	lb $t1, 0($a0)
 	bne $t1, $zero, _sloop
 	
