@@ -3,6 +3,9 @@ nl: .asciiz "\n"
 
 	.text
 main:
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	
 	# print male
 	li $s0, 0
 	li $s1, 10
@@ -38,6 +41,10 @@ _floop:
 
     li $v0, 10
     syscall
+ 
+    lw $ra, 0($sp)
+	addi $sp, $sp, 4
+    jr $ra
    
    
 male:
@@ -63,6 +70,7 @@ _md:
 	addi $sp, $sp, 8
 	
 	jr $ra
+
 
 female:
 	addi $sp, $sp, -8

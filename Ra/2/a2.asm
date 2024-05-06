@@ -1,6 +1,9 @@
 
 	.text
 main:
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+
 	# get input integer
 	li $v0, 5
 	syscall
@@ -15,6 +18,10 @@ main:
 	
 	li $v0, 10
     syscall
+
+    lw $ra, 0($sp)
+	addi $sp, $sp, 4
+    jr $ra
 	
 
 magic:

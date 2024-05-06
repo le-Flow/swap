@@ -28,7 +28,7 @@ _done:
 
     li $v0, 10
     syscall
-    
+
     add $sp, $sp, $s0
     lw $ra, 0($sp)
 	addi $sp, $sp, 4
@@ -37,15 +37,15 @@ _done:
 
 strlen:
 	add $t0, $zero, $zero
-	#j _sloopc
 _sloop:
+	lb $t1, 0($a0)
+	beqz $t1, _sdone
+	
 	addi $a0, $a0, 1
 	addi $t0, $t0, 1
+	j _sloop
 
-#_sloopc:
-	lb $t1, 0($a0)
-	bne $t1, $zero, _sloop
-	
+_sdone:	
 	add $v0, $t0, $zero
 	jr $ra
 
