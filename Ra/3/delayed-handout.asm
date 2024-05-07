@@ -1,6 +1,4 @@
-
-.text 
-
+	.text 
 main:
 	addiu $sp, $sp, -4
 	sw $ra, 0($sp)
@@ -10,9 +8,8 @@ main:
 	syscall
 	
 	# Fakultät berechnen
-	add $a0, $v0, $zero
 	jal factorial
-	add $zero, $zero, $zero
+	add $a0, $v0, $zero
 
 	# Ausgabe
 	add  $a0, $v0, $zero
@@ -29,22 +26,13 @@ main:
 
 
 factorial:
-add $t1, $zero, $zero # i = 0 in register t1
-addi $v0, $zero, 1 # 1 in result
+	add $t1, $zero, $zero # i = 0 in register t1
+	addi $v0, $zero, 1 # 1 in result
 loop:
-beq $t1, $a0, end
-addi $t1, $t1, 1 # i++
-j loop
-mul $v0, $v0, $t1 # result = result * i
+	beq $t1, $a0, end
+	addi $t1, $t1, 1 # i++
+	j loop
+	mul $v0, $v0, $t1 # result = result * i
 end:
-jr $ra
-add $zero, $zero, $zero
-
-
-
-
-
-
-
-
-
+	jr $ra
+	add $zero, $zero, $zero
